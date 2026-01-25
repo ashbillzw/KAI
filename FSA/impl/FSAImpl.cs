@@ -13,6 +13,7 @@ namespace KAI.FSA
 			new List<State>();
 		public State currentState;
 		public Stack<State> stateStack = new Stack<State>();
+		public List<Transition> pervasiveTransitionList = new List<Transition>();
 		private string name;
 		private Boolean traceStates=false;
 
@@ -31,11 +32,30 @@ namespace KAI.FSA
 		/// <returns>
 		/// The transition that fire or null if no transition fired
 		/// </returns>
-		public virtual Transition DoEvent(String evt){
-			if (currentState!=null){
-				return currentState.doEvent(this,evt);	
+		public virtual bool DoEvent(String evt)
+		{
+			if (currentState != null)
+			{
+				if (currentState.doEvent(this, evt))
+				{
+					return true;
+				}
 			}
-			return null;
+			else // try pervasive
+			{
+				foreach (Transition t in pervasiveTransitionList)
+				{
+					if (t.getEvent() == evt)
+					{
+						if (t.conditionTest(this))
+						{
+							t.doit(this);
+							return true;
+						}
+					}
+				}
+			}
+			return false;
 		}
 			
 		public virtual State MakeNewState(string name=null){
@@ -54,7 +74,7 @@ namespace KAI.FSA
 			}
 			currentState = state;
 		}
-	protected void AddToStateList(State state){
+		protected void AddToStateList(State state){
 			stateList.Add(state);	
 		}
 		
@@ -68,32 +88,18 @@ namespace KAI.FSA
 			return currentState;	
 		}
 		
-		/// <summary>
-		/// Pushes a state ontoi this FSA's state stack
-		/// </summary>
-		/// <param name="state">
-		/// the state to push <see cref="State"/>
-		/// </param>
-		public void PushState(State state){
-			stateStack.Push(state);	
-		}
-		
-		/// <summary>
-		/// Pops the last pushed state and returns it
-		/// </summary>
-		/// <returns>
-		/// the popped State or null if the stack is empty <see cref="State"/>
-		/// </returns>
-		public State PopState(){
-			if (stateStack.Count==0){
-				return null;
-			}  else {
-				return stateStack.Pop();	
-			}
-		}
+	
 		
 		public string GetName(){
 			return name;
+		}
+
+		public virtual Transition addPervasiveTransition(string evt, ConditionDelegate[] conditions, ActionDelegate[] actions, State nextState,
+			string postEvent = null)
+		{
+			Transition t = new TransitionImpl(evt, conditions, actions, nextState, postEvent);
+			pervasiveTransitionList.Add(t);
+			return t;
 		}
 	}
 }

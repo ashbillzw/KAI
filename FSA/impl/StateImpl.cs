@@ -55,16 +55,16 @@ namespace KAI.FSA
 		/// <param name="evt">
 		/// The event represented as a case-sensative string <see cref="String"/>
 		/// </param>
-		public virtual Transition doEvent(FSA fsa, String evt){
+		public virtual bool doEvent(FSA fsa, String evt){
 			foreach (Transition t in transitionList){
 				if (t.getEvent()==evt){
 					if (t.conditionTest(fsa)){
 						t.doit(fsa);
-						return t;
+						return true;
 					}
 				}
 			}
-			return null;
+			return false;
 		}
 		
 		public string GetName(){

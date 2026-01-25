@@ -37,6 +37,8 @@ namespace KAI.FSA
 		
 		
 		
+		
+		
 		/// <summary>
 		/// This method sends an event to the state.  The state will execute the
 		/// first transition it finds which matches the event and whose conditions
@@ -51,7 +53,7 @@ namespace KAI.FSA
 		/// <returns>
 		/// The transition that fired or null if none fired
 		/// </returns>
-	    Transition doEvent(FSA fsa, String evt);
+	    Boolean doEvent(FSA fsa, String evt);
 		
 		string GetName();
 

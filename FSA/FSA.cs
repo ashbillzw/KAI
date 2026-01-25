@@ -19,7 +19,7 @@ namespace KAI.FSA
 		/// The Transition that fired, or null if none fired
 		/// </returns>
 		/// 
-		Transition DoEvent(String evt);
+		bool DoEvent(String evt);
 		
 		/// <summary>
 		/// This sets the current state of the FSA
@@ -47,23 +47,11 @@ namespace KAI.FSA
 		/// </returns>
 		State GetCurrentState();
 		
-		/// <summary>
-		/// Pushes a state ontoi this FSA's state stack
-		/// </summary>
-		/// <param name="state">
-		/// the state to push <see cref="State"/>
-		/// </param>
-		void PushState(State state);
-		
-		/// <summary>
-		/// Pops the last pushed state and returns it
-		/// </summary>
-		/// <returns>
-		/// the popped State or null if the stack is empty <see cref="State"/>
-		/// </returns>
-		State PopState();
-		
+
 		string GetName();
+		
+		Transition addPervasiveTransition(String evt, ConditionDelegate[] conditions, ActionDelegate[] actions,State nextState, 
+			String postEvent=null);
 	}
 }
 

@@ -20,15 +20,17 @@ public class PushdownTransitionImpl: TransitionImpl
         {
             throw new ArgumentException("Pushdown transition passed an incompatagble FSA");
         }
+
+        PushdownFSA pfsa = (PushdownFSA)fsa;
         if (pushPop == PushPop.Push)
         {
-            fsa.PushState(fsa.GetCurrentState());
+            pfsa.PushState(fsa.GetCurrentState());
             base.doit(fsa);
         }
         else
         {
             base.doit(fsa);
-            fsa.SetCurrentState(fsa.PopState());
+            pfsa.SetCurrentState(pfsa.PopState());
         }
     }
 
