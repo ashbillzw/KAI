@@ -120,7 +120,7 @@ namespace Miner49er
             thirst++;
         }
 
-        private Boolean pocketsFull(FSA fsa) => gold >= 5;
+        private Boolean pocketsFull(FSA fsa) => gold >= 10;
 
         private Boolean pocketsNotEmpty(FSA fsa) => gold > 0;
 
