@@ -56,7 +56,7 @@ namespace Miner49er
                 new ActionDelegate[] { new ActionDelegate(this.depositGold) }, bankingState);
 
             bankingState.addTransition("tick",
-                new ConditionDelegate[] { new ConditionDelegate(this.parched) },
+                new ConditionDelegate[] { new ConditionDelegate(this.simiParched) },
                 new ActionDelegate[] { }, drinkingState);
             
             bankingState.addTransition("tick",
@@ -77,6 +77,16 @@ namespace Miner49er
                 Console.WriteLine("Too thirsty too work.");
             }
             return thirst >= 15;
+        }
+
+        private Boolean simiParched(FSA fsa)
+        {
+            if (thirst > 4)
+            {
+                Console.WriteLine("Already in town, drinking early.");
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
